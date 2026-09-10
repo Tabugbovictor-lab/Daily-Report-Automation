@@ -1,0 +1,152 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b1ac7148-76b3-42da-a46a-619cb08a74ba",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Take the following raw notes and write a formal 300-word daily report structured with an Introduction, Key Concepts Learned, Technical Implementation, and Conclusion.{{ $('Get a document').item.json.content }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        0
+      ],
+      "id": "9ab886d3-eea3-4d7b-8fb6-505a551274a6",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "jamalturner960@gmail.com",
+        "subject": "DAILY HAVILA ACADEMY REPORT",
+        "emailType": "text",
+        "message": "={{ $json.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "25d68613-6325-4dbc-a989-e80e2c288838",
+      "name": "Send a message",
+      "webhookId": "d74baaec-3ec5-4877-99b3-8de2d95981e1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "PyCn2IjMA5zQ15W9",
+          "name": "Gmail account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1icxHbDdMoDBWpcMR7XossISHo3huSays8VMYE2veAMc"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0d94d4a6-00f4-473d-9f0b-afe802d262dc",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "joXxkVXL3D39678R",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0f9e132a-4326-4308-b571-a4a756f7d88a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "153c6d0f176a7bc51c63022db812a4b77988410214a9b5faac5c7a524543b94e"
+  },
+  "nodeGroups": [],
+  "id": "DxXvr1ChOIudW5PW",
+  "tags": []
+}
